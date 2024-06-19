@@ -12,7 +12,7 @@ type DepReqApi struct {
 
 
 
-func getDepReqApi() *DepReqApi{
+func GetDepReqApi() *DepReqApi{
 	once.Do(func(){
 		depReqApi = &DepReqApi{depR: &DepR{
 			instanceMap: make(map[string] *instanceInfo),
@@ -24,7 +24,7 @@ func getDepReqApi() *DepReqApi{
 	return depReqApi
 }
 
-func (d *DepReqApi) put(instName string, inst interface{}) error{
+func (d *DepReqApi) Put(instName string, inst interface{}) error{
 	request := &request{ii: &instanceInfo{instanceName: instName, instance: reflect.ValueOf(inst), instanceType: reflect.TypeOf(inst)}, requestType: "put"}
 	d.depR.requestChan <- request
 	response := <-d.depR.responseChan
@@ -34,7 +34,7 @@ func (d *DepReqApi) put(instName string, inst interface{}) error{
 	return nil
 }
 
-func (d *DepReqApi) get(instName string) (interface{}, error){
+func (d *DepReqApi) Get(instName string) (interface{}, error){
 	request := &request{ii: &instanceInfo{instanceName: instName}, requestType: "get"}
 	d.depR.requestChan <- request
 	response := <-d.depR.responseChan
